@@ -1,0 +1,59 @@
+#+title: CLOG-C3: C3.js Wrapper for CLOG
+#+author: 凉凉 (li-yiyang, or ryo)
+* About
+This package is a C3.js wrapper for CLOG.
+It's derived from a part of my working project.
+I split it into a single module so it could be
+easily reused in the future.
+
+So, =clog-c3= is a package for plotting data,
+but I won't say it's able to plot massive data blocks.
+
+Thanks for rabbibotton's [[https://github.com/rabbibotton/clog/][CLOG]] project, and the [[https://github.com/c3js/c3][C3.js]] project.
+
+* Usage
++ (optional but recommanded)
+  set the D3, C3 js and css file to your local
+  static file path: =*clog-d3-js-path*=, =*clog-c3-js-path*=,
+  =*clog-c3-css-path*=
+
+  you may consider putting a copy of these dependencies
+  under your static root directory;
++ use =create-clog-c3-plot= to create a
+  C3 plot as a div container with given dataset;
++ use =c3-load= to add/update plot data
++ use =c3-unload= to remove plot data
+
+for more details, please refer to C3.js [[https://c3js.org/reference.html][reference]] or
+read the methods' docstring.
+
+* Develop Note
+** Level-1
+If you want to plot your CLOS object using =clog-c3=,
+please implement =c3-data-id=, =c3-form= methods for your
+CLOS class:
+
++ =c3-data-id= should return a unique name string as C3 chart target id;
++ =c3-form= should return string like ="a1,a2,a3,a4"= as C3 chart data,
+  if your data is a 2D data (for example, a simple XY line plot),
+  return values like =(values "y1,y2,y3" "x1,x2,x3")=.
+
+** Level-0
+If you want to contribute or hack =clog-c3= (it's weclomed),
+please read the =Develop Note= in the source code.
+
+You may found those JS DSL macros in =utils.lisp= very handy.
+
+* LICENCE
+This program is free software: you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of
+the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
