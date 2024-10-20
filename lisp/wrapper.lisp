@@ -7,7 +7,7 @@
 ;; Copyright (c) 2024, li-yiyang, all rights reserved
 ;; Created: 2024-10-19 23:39
 ;; Version: 0.1.0
-;; Last-Updated: 2024-10-19 23:39
+;; Last-Updated: 2024-10-21 00:02
 ;;           By: li-yiyang
 ;; URL: https://github.com/li-yiyang/clog-c3
 ;; Keywords: CLOG, C3, D3, chart
@@ -121,17 +121,23 @@
                         (js[ (js-form id :string) data-form)
                         (cond (xs-dataset
                                (setf xs-p  t
-                                     xs-id (or xs-id (c3-data-id xs-dataset)
+                                     xs-id (or xs-id
+                                               (when xs-dataset
+                                                 (c3-data-id xs-dataset))
                                                (format nil "~A-x" id)))
-                               (js[ xs-id (c3-form xs-dataset)))
+                               (js[ (js-form xs-id :string)
+                                    (c3-form xs-dataset)))
                               (xs-form
                                (setf xs-p  t
-                                     xs-id (or xs-id (c3-data-id xs-dataset)
+                                     xs-id (or xs-id
+                                               (when xs-dataset
+                                                 (c3-data-id xs-dataset))
                                                (format nil "~A-x" id)))
-                               (js[ xs-id xs-form))
+                               (js[ (js-form xs-id :string)
+                                    xs-form))
                               (t "")))))
-           ((:color color) (format nil "{~A:\"~A\"}" (js-form id) color))
-           ((:xs    xs-p)  (format nil "{~A:\"~A\"}" (js-form id) xs-id))))
+           ((:color color) (format nil "{\"~A\":\"~A\"}" (js-form id) color))
+           ((:xs    xs-p)  (format nil "{\"~A\":\"~A\"}" (js-form id) xs-id))))
         ((:tooltip hide-tooltip) "{show:false}")
         ((:legend  hide-legend)  "{show:false}")
         ((:axis (or x-label y-label))
@@ -167,7 +173,9 @@
       (js{
         (:columns (js[ (js[ (js-form id :string) data-form)
                        (when* (or xs-form xs-dataset)
-                         (js[ (js-form (or xs-id (c3-data-id xs-dataset)
+                         (js[ (js-form (or xs-id
+                                           (when xs-dataset
+                                             (c3-data-id xs-dataset))
                                            (format nil "~A-x" id))
                                        :string)
                               (or xs-form (c3-form xs-dataset))))))

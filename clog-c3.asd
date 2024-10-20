@@ -35,7 +35,7 @@
 (asdf:defsystem #:clog-c3
   :author ("凉凉")
   :maintainer ("凉凉")
-  :url "http://github.com/li-yiyang/clog-c3"
+  ;; :url "http://github.com/li-yiyang/clog-c3"
   :version "0.1.0"
   :license "GPLv3"
   :description "This is C3 wrapper for CLOG. "
