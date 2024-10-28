@@ -7,7 +7,7 @@
 ;; Copyright (c) 2024, li-yiyang, all rights reserved
 ;; Created: 2024-10-19 23:39
 ;; Version: 0.1.0
-;; Last-Updated: 2024-10-21 00:02
+;; Last-Updated: 2024-10-28 17:17
 ;;           By: li-yiyang
 ;; URL: https://github.com/li-yiyang/clog-c3
 ;; Keywords: CLOG, C3, D3, chart
@@ -87,6 +87,8 @@
                                   (id (c3-data-id dataset))
                                   color
                                   (type :line)
+                                  (zoomable t)
+                                  (zoom-type :drag)
                                   xs-dataset
                                   xs-id
                                   x-label
@@ -138,6 +140,7 @@
                               (t "")))))
            ((:color color) (format nil "{\"~A\":\"~A\"}" (js-form id) color))
            ((:xs    xs-p)  (format nil "{\"~A\":\"~A\"}" (js-form id) xs-id))))
+        ((:zoom zoomable)  (format nil "{enabled:true,type:~A}" (js-form zoom-type :string)))
         ((:tooltip hide-tooltip) "{show:false}")
         ((:legend  hide-legend)  "{show:false}")
         ((:axis (or x-label y-label))

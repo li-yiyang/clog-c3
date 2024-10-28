@@ -7,7 +7,7 @@
 ;; Copyright (c) 2024, li-yiyang, all rights reserved
 ;; Created: 2024-10-19 23:37
 ;; Version: 0.1.0
-;; Last-Updated: 2024-10-19 23:37
+;; Last-Updated: 2024-10-28 17:21
 ;;           By: li-yiyang
 ;; URL: https://github.com/li-yiyang/clog-c3
 ;; Keywords: CLOG, C3, D3, chart
@@ -78,6 +78,7 @@ JS script calling. "))
                                    hide-tooltip
                                    hide-legend
                                    xs-dataset xs-id
+                                   zoomable zoom-type
                                    x-label y-label
                                    x-label-position
                                    y-label-position
@@ -103,6 +104,8 @@ Para:
    (if `dataset' supports `c3-form' and returns
     rendered xs infomation, but note that `xs-dataset'
     will overwrites xs infomation from `c3-form')
+ * `zoomable' for graph to be able to zoom
+ * `zoom-type': should be one of `:drag' (default) or `:scroll'
  * `x-label', `y-label', `x-label-position', `y-label-position'
    related with axis label
  * `hide-tooltip': non-nil for hiding tooltip (default nil)
