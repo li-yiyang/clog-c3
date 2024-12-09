@@ -7,7 +7,7 @@
 ;; Copyright (c) 2024, li-yiyang, all rights reserved
 ;; Created: 2024-10-19 23:39
 ;; Version: 0.1.0
-;; Last-Updated: 2024-10-28 17:17
+;; Last-Updated: 2024-10-21 00:02
 ;;           By: li-yiyang
 ;; URL: https://github.com/li-yiyang/clog-c3
 ;; Keywords: CLOG, C3, D3, chart
@@ -72,6 +72,20 @@
 ;; if given `data' is string, treat it as data id, return itself
 (defmethod c3-data-id ((str string)) str)
 
+;; by default `c3-plot-type' will raise error for no implementation
+(defmethod c3-data-type (dataset)
+  (restart-case
+      (error (format nil "`c3-data-type' is not implemented for `~A'"
+                     (class-name (class-of dataset))))
+    (set-type (new-type)
+      :report "Set type with given input"
+      :interactive (lambda () (list (js-form (read))))
+      new-type)))
+
+;; if given `data' is string or keyword, treat it as data type, return self
+(defmethod c3-data-type ((str string)) str)
+(defmethod c3-data-type ((sym symbol)) sym)
+
 ;; by default `c3-form' will use (js-form data :array)
 (defmethod c3-form (data)
   (values (js-form data :no-brackets-array) nil))
@@ -87,14 +101,13 @@
                                   (id (c3-data-id dataset))
                                   color
                                   (type :line)
-                                  (zoomable t)
-                                  (zoom-type :drag)
                                   xs-dataset
                                   xs-id
                                   x-label
                                   y-label
                                   hide-tooltip
                                   hide-legend
+                                  (x-max-ticks 10)
                                   (x-label-position :outer-right)
                                   (y-label-position :outer-top)
                                   (width  800)
@@ -116,7 +129,7 @@
         (:bindto  (format nil "\"#~A\"" (html-id c3)))
         (:data
          (js{
-           (:type    (js-form type :string))
+           (:type    (js-form (or type (c3-data-type dataset)) :string))
            (:columns (multiple-value-bind (data-form xs-form)
                          (c3-form dataset)
                        (js[
@@ -140,7 +153,6 @@
                               (t "")))))
            ((:color color) (format nil "{\"~A\":\"~A\"}" (js-form id) color))
            ((:xs    xs-p)  (format nil "{\"~A\":\"~A\"}" (js-form id) xs-id))))
-        ((:zoom zoomable)  (format nil "{enabled:true,type:~A}" (js-form zoom-type :string)))
         ((:tooltip hide-tooltip) "{show:false}")
         ((:legend  hide-legend)  "{show:false}")
         ((:axis (or x-label y-label))
@@ -153,6 +165,7 @@
            (:x (js{
                  (:label
                   (js-form (or x-label "x") :string))
+                 (:tick (format nil "culling:{max:~D}" x-max-ticks))
                  ((:position y-label-position)
                   (js-form x-label-position :string))))))))
 
@@ -182,7 +195,13 @@
                                            (format nil "~A-x" id))
                                        :string)
                               (or xs-form (c3-form xs-dataset))))))
-        ((:type  type)  (js-form type  :string))
+        ((:xs (or xs-form xs-dataset))
+         (format nil "{'~A':'~A'}"
+                 id (or xs-id
+                        (when xs-dataset
+                          (c3-data-id xs-dataset))
+                        (format nil "~A-x" id))))
+        ((:type  type)  (js-form (or type (c3-data-type dataset))  :string))
         ((:color color) (js-form color :string))))))
 
 (defmethod c3-unload ((c3 clog-c3) &rest targets)

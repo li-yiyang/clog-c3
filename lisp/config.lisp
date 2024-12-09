@@ -49,4 +49,4 @@
 
 (defun c3-data-type-list ()
   "Return a list of currently supported C3 type. "
-  (list :line))
+  (list :line :step :scatter :bar))

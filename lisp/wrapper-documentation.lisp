@@ -7,7 +7,7 @@
 ;; Copyright (c) 2024, li-yiyang, all rights reserved
 ;; Created: 2024-10-19 23:37
 ;; Version: 0.1.0
-;; Last-Updated: 2024-10-28 17:21
+;; Last-Updated: 2024-10-19 23:37
 ;;           By: li-yiyang
 ;; URL: https://github.com/li-yiyang/clog-c3
 ;; Keywords: CLOG, C3, D3, chart
@@ -78,7 +78,7 @@ JS script calling. "))
                                    hide-tooltip
                                    hide-legend
                                    xs-dataset xs-id
-                                   zoomable zoom-type
+                                   x-max-ticks
                                    x-label y-label
                                    x-label-position
                                    y-label-position
@@ -104,10 +104,9 @@ Para:
    (if `dataset' supports `c3-form' and returns
     rendered xs infomation, but note that `xs-dataset'
     will overwrites xs infomation from `c3-form')
- * `zoomable' for graph to be able to zoom
- * `zoom-type': should be one of `:drag' (default) or `:scroll'
  * `x-label', `y-label', `x-label-position', `y-label-position'
    related with axis label
+ * `x-max-ticks': set max x-ticks
  * `hide-tooltip': non-nil for hiding tooltip (default nil)
  * `hide-legend': non-nil for hiding legend (default nil)
  * `width', `height': the div width and height
@@ -126,6 +125,19 @@ Develop Note:
    so call it like:
        (or id (c3-data-id data))
  * if given `data' is string, treat it as data id, return itself
+ * define the implementation for abstract data class"))
+
+(defgeneric c3-plot-type (data)
+  (:documentation
+   "Return a keyword or string (if possible) for `data' type in C3 chart.
+
+Develop Note:
+ * by default `c3-plot-type' will raise error for no implementation,
+   so call it like:
+
+       (or type (c3-plot-type data))
+ * if given `data' is string or keyword, treat it as data type,
+   return itself
  * define the implementation for abstract data class"))
 
 (defgeneric c3-form (data)

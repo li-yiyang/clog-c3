@@ -76,11 +76,14 @@ Develop Note:
    #:*clog-c3-js-path*
    #:*clog-c3-css-path*
 
+   #:c3-data-type-list
+
    ;;; wrapper
    ;; for Dev usage:
    #:clog-c3
    #:c3-chart-id
    #:c3-data-id
+   #:c3-data-type
    #:c3-form
 
    ;; for Norm usage:
